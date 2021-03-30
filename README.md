@@ -9,7 +9,8 @@
 ### 사용 방법
 
 1. NetPlay의 DummyServer.exe와 DummyClient.exe를 실행합니다.
-[DummyServer와 DummyClient](https://github.com/woodgh/Project-NetPlay/releases/download/1.0/DummyTest.zip)
+
+[DummyTest 다운로드](https://github.com/woodgh/Project-NetPlay/releases/download/1.0/DummyTest.zip)
 
 3. GameClient.exe를 실행합니다. 
 
