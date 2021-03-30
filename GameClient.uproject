@@ -1,0 +1,21 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{1BB7BCE9-4B2E-B660-848D-38A0BFE8C20B}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "GameClient",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine",
+				"UMG",
+				"CoreUObject"
+			]
+		}
+	],
+	"TargetPlatforms": [
+		"WindowsNoEditor"
+	]
+}

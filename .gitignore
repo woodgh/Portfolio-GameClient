@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+# Visual Studio
+/.vs
+
+# Unreal Engine
+/Build
+/Binaries
+/Intermediate
+/DerivedDataCache
+/Saved
