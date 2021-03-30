@@ -20,8 +20,8 @@ public:
 
 private:
 	UPROPERTY(meta = (BindWidget))
-	UTextBlock* index_ = nullptr;
+	UTextBlock* index_ = nullptr;							// 매쉬위에 출력될 식별값 텍스트
 
 private:
-	TWeakObjectPtr< class ADummy > dummyPtr_ = nullptr;
+	TWeakObjectPtr< class ADummy > dummyPtr_ = nullptr;		// 더미 정보
 };

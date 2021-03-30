@@ -6,6 +6,7 @@
 
 void UChat::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
+	// 채팅 UI 목록에 대한 아이템 데이타 지정하기
 	UChatMsg* Data = Cast< UChatMsg >(ListItemObject);
 
 	if (Data == nullptr)

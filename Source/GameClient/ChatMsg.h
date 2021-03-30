@@ -36,7 +36,7 @@ public:
 	}
 
 private:
-	int32 index_ = 0;
+	int32 index_ = 0;	// 채팅 보낸 사람
 
-	FString msg_;
+	FString msg_;		// 채팅 내용
 };

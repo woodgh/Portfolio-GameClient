@@ -10,6 +10,7 @@ AMainController::AMainController()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	// HUD 
 	static ConstructorHelpers::FClassFinder< UUserWidget > UI(
 		TEXT("WidgetBlueprint'/Game/UI/MainHUD.MainHUD_C'")
 	);
@@ -17,6 +18,7 @@ AMainController::AMainController()
 	if (UI.Succeeded())
 		ui_ = UI.Class;
 
+	// 채팅
 	static ConstructorHelpers::FClassFinder< UUserWidget > CHAT(
 		TEXT("WidgetBlueprint'/Game/UI/Chat.Chat_C'")
 	);
@@ -27,6 +29,7 @@ AMainController::AMainController()
 
 void AMainController::SetupInputComponent()
 {
+	// 채팅 모드 전환 초기화
 	Super::SetupInputComponent();
 
 	if (InputComponent)
@@ -37,6 +40,7 @@ void AMainController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// HUD UI 초기화
 	if (ui_)
 		hud_ = CreateWidget< UMainHUD >(this, ui_);
 
@@ -50,9 +54,11 @@ void AMainController::BeginPlay()
 		hud_->SetTextCommitted(Delegate);
 	}
 
+	// 클라이언트 생성 및 접속 하기
 	if (client_->Connect(TEXT("127.0.0.1"), 20000, this, &AMainController::OnDelivery) == false)
 		UE_LOG(LogTemp, Error, TEXT("Failed to NetClient::Connect"));
 
+	// 접속 후 서버에 초기 더미 정보 보내기
 	ADummy* Dummy = Cast< ADummy >(UGameplayStatics::GetPlayerCharacter(this, 0));
 
 	if (Dummy == nullptr)
@@ -73,6 +79,7 @@ void AMainController::BeginPlay()
 
 void AMainController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	// 클라이언트 종료하기
 	if (client_->Shutdown() == false)
 		UE_LOG(LogTemp, Error, TEXT("Failed to NetClient::Shutdown"));
 
@@ -81,8 +88,10 @@ void AMainController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void AMainController::Tick(float DeltaTime)
 {
+	// 클라이언트 업데이트
 	client_->Update();
 
+	// 위치 보내기
 	ADummy* Dummy = Cast< ADummy >(UGameplayStatics::GetPlayerCharacter(this, 0));
 
 	if (Dummy == nullptr)
@@ -122,6 +131,7 @@ void AMainController::Tick(float DeltaTime)
 
 bool AMainController::OnDelivery(NetPlay::Packet* Packet)
 {
+	// 프로토콜 파싱하기
 	if (Packet == nullptr)
 		return false;
 
@@ -134,19 +144,19 @@ bool AMainController::OnDelivery(NetPlay::Packet* Packet)
 
 	switch (ProtoType)
 	{
-	case Protocol::ResDummyInfo:
+	case Protocol::ResDummyInfo:		// 더미 정보 받기
 		Result = ResDummyInfo(Packet);
 		break;
 
-	case Protocol::InSight:
+	case Protocol::InSight:				// 시야에 들어옴
 		Result = InSight(Packet);
 		break;
 
-	case Protocol::OutOfSight:
+	case Protocol::OutOfSight:			// 시야에 멀어짐
 		Result = OutOfSight(Packet);
 		break;
 
-	case Protocol::Chat:
+	case Protocol::Chat:				// 채팅
 		Result = OnChat(Packet);
 		break;
 	}
@@ -159,6 +169,7 @@ bool AMainController::OnDelivery(NetPlay::Packet* Packet)
 
 bool AMainController::ResDummyInfo(NetPlay::Packet* Packet)
 {
+	// 더미 정보 받기
 	if (Packet == nullptr)
 		return false;
 
@@ -184,6 +195,7 @@ bool AMainController::ResDummyInfo(NetPlay::Packet* Packet)
 
 bool AMainController::InSight(NetPlay::Packet* Packet)
 {
+	// 시야에 들어옴
 	if (Packet == nullptr)
 		return false;
 
@@ -218,6 +230,7 @@ bool AMainController::InSight(NetPlay::Packet* Packet)
 
 		if (dummyGroup_.Contains(Index) == false)
 		{
+			// 시야 목록에 없으면 더미 생성하기
 			Dummy = dummyGroup_.Add(Index, GetWorld()->SpawnActor< ADummy >(ADummy::StaticClass(), Location, Rotation.Rotation()));
 			Dummy->SetIndex(Index);
 			Dummy->SetPlayable(Playable);
@@ -226,10 +239,11 @@ bool AMainController::InSight(NetPlay::Packet* Packet)
 		}
 		else
 		{
+			// 시야에 있으면 해당 더미 가져오기
 			Dummy = dummyGroup_[Index];
 		}
 
-
+		// 더미 정보 업데이트
 		if (Playable)
 		{
 			*Packet
@@ -255,6 +269,7 @@ bool AMainController::InSight(NetPlay::Packet* Packet)
 
 bool AMainController::OutOfSight(NetPlay::Packet* Packet)
 {
+	// 시야에 멀어짐
 	if (Packet == nullptr)
 		return false;
 
@@ -284,6 +299,7 @@ bool AMainController::OutOfSight(NetPlay::Packet* Packet)
 
 bool AMainController::OnChat(class NetPlay::Packet* Packet)
 {
+	// 채팅
 	if (Packet == nullptr)
 		return false;
 	
@@ -313,12 +329,14 @@ bool AMainController::OnChat(class NetPlay::Packet* Packet)
 
 void AMainController::ChatMode(void)
 {
+	// 엔터키 처리 -> 채팅 UI 포커스 활성화
 	if (hud_)
 		hud_->SetChatMode();
 }
 
 void AMainController::OnTextCommitted(const FText& Text, ETextCommit::Type CommitMethod)
 {
+	// 채팅 입력이 완료 된 후 처리 부
 	if (CommitMethod != ETextCommit::OnEnter)
 		return;
 
@@ -357,6 +375,7 @@ void AMainController::OnTextCommitted(const FText& Text, ETextCommit::Type Commi
 		}
 	}
 
+	// 입력 UI 초기화 및 인게임 포커스 활성화
 	if (hud_)
 		hud_->ClearChat();
 

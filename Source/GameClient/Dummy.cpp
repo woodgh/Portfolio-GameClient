@@ -7,6 +7,7 @@ ADummy::ADummy()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	// 카메라 및 메쉬, 애니메이션, UI 정보 초기화
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
@@ -68,6 +69,7 @@ ADummy::~ADummy()
 
 void ADummy::MoveToActor(FVector& Location, FVector& Rotation, FVector& Velocity)
 {
+	// 위치, 방향, 속도 기준으로 이동하기
 	AddMovementInput(Velocity);
 	SetActorRotation(Rotation.Rotation());
 	SetActorLocation(Location);
@@ -75,6 +77,7 @@ void ADummy::MoveToActor(FVector& Location, FVector& Rotation, FVector& Velocity
 
 void ADummy::MoveToLocation(FVector& Location, FVector& TargetLocation)
 {
+	// 목표 지점으로 이동
 	AAIController* AIController = Cast< AAIController >(GetController());
 
 	if (AIController)
@@ -85,6 +88,7 @@ void ADummy::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// 초기 UI 지정하기
 	if (ui_)
 		Cast< UDummyUI >(ui_->GetUserWidgetObject())->SetOwner(this);
 }
@@ -98,6 +102,7 @@ void ADummy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	// 입력부 초기화
 	PlayerInputComponent->BindAxis(TEXT("MoveFoward"), this, &ADummy::MoveFoward);
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &ADummy::MoveRight);
 	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &ADummy::Turn);
@@ -106,6 +111,7 @@ void ADummy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ADummy::MoveFoward(float AxisValue)
 {
+	// 전방 이동
 	const FRotator Rotation = Controller->GetControlRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 
@@ -116,6 +122,7 @@ void ADummy::MoveFoward(float AxisValue)
 
 void ADummy::MoveRight(float AxisValue)
 {
+	// 측면 이동
 	const FRotator Rotation = Controller->GetControlRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 

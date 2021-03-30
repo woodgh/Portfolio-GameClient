@@ -5,6 +5,7 @@
 
 void UMainHUD::SetActorInfo(FVector& Location, FVector& Rotation, FVector& Velocity, float DeltaTime)
 {
+	// 더미 정보 출력을 위한 HUD 출력 설정하기
 	if (location_)
 		location_->SetText(FText::FromString(FString::Printf(TEXT("Location: %+03.03f/%+03.03f/%+03.03f"), Location.X, Location.Y, Location.Z)));
 
@@ -20,6 +21,7 @@ void UMainHUD::SetActorInfo(FVector& Location, FVector& Rotation, FVector& Veloc
 
 void UMainHUD::AddChat(UChatMsg* Msg)
 {
+	// 채팅 이력 추가하기
 	if (Msg== nullptr)
 		return;
 
@@ -36,12 +38,14 @@ void UMainHUD::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 
 void UMainHUD::SetChatMode(void)
 {
+	// 채팅 모드 활성화
 	if (input_ && input_->HasKeyboardFocus() == false)
 		input_->SetFocus();
 }
 
 void UMainHUD::ClearChat(void)
 {
+	// 채팅 입력 UI 초기화
 	if (input_)
 		input_->SetText(FText());
 }

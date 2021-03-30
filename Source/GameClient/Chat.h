@@ -19,5 +19,5 @@ public:
 
 private:
 	UPROPERTY(meta = (BindWidget))
-	UTextBlock* msg_ = nullptr;
+	UTextBlock* msg_ = nullptr;		// 채팅 목록에 대한 각각의 텍스트
 };

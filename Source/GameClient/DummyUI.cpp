@@ -5,6 +5,7 @@
 
 void UDummyUI::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
+	// 더미 식별 UI 설정하기
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
 	if (!dummyPtr_.IsValid())
