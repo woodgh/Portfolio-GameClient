@@ -9,7 +9,7 @@
 ### 사용 방법
 
 1. NetPlay의 DummyServer.exe와 DummyClient.exe를 실행합니다.
-(윈도우/리눅스 빌드 서버 사용 가능합니다.)
+[DummyServer와 DummyClient](https://github.com/woodgh/Project-NetPlay/releases/download/1.0/DummyTest.zip)
 
 3. GameClient.exe를 실행합니다. 
 
