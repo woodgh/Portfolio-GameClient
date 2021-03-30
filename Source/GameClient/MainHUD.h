@@ -47,7 +47,7 @@ private:
 	UTextBlock* velocity_ = nullptr;	// 속도 텍스트
 
 	UPROPERTY(meta = (BindWidget))
-	UTextBlock* deltaTime_ = nullptr;	// 델타타임
+	UTextBlock* deltaTime_ = nullptr;	// 델타타임 텍스트
 
 	UPROPERTY(meta = (BindWidget))
 	UListView* history_ = nullptr;		// 채팅 이력 리스트뷰
