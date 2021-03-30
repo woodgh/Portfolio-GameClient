@@ -4,6 +4,7 @@
 
 > 맵: 10 x 10 크기(한 섹터당 5040 크기)
 
+![image](https://user-images.githubusercontent.com/8158795/112950652-7aa88e00-9175-11eb-9116-2c224c5b53b7.png)
 
 ### 사용 방법
 
